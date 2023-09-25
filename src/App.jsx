@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react';
 import './App.css'
+import Form from './components/Form';
+import MovieDisplay from './components/MovieDisplay';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [movie, setMovie] = useState(null);
+  const apiKey = "98e3fb1f";
+
+  const getMovie = async (searchTerm) => {
+    
+    try {
+      const response = await fetch(
+        `http://www.omdbapi.com/?apikey=${apiKey}&t=${searchTerm}`
+      );
+  
+      const data = await response.json();
+
+      setMovie(data);
+    } catch(e){
+      console.error(e)
+    }
+
+    const data = await response.json();
+    setMovie(data);
+  };
+
+  useEffect(() => {
+    getMovie("Jingle All The Way");
+  }, []);
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <MovieDisplay movie={movie} />
+      <Form moviesearch={getMovie} />
+    </div>
+  );
 }
 
 export default App

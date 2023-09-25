@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MovieDisplay = () => {
+const MovieDisplay = ({movie}) => {
 
     // will return the data info
     const loaded = () => {
